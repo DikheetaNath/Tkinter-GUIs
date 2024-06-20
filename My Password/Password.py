@@ -15,17 +15,17 @@ def generate_random_password():
 
 
 def save():
-    website_ = website_input.get()
-    mail_in = mail_input.get()
-    passw = password_input.get()
+    website_entry = website_input.get()
+    mail_entry = mail_input.get()
+    password_entry = password_input.get()
     new_data = {
-        website_: {
-            "email": mail_in,
-            "password": passw
+        website_entry: {
+            "email": mail_entry,
+            "password": password_entry
         }
     }
 
-    if len(website_) == 0 or len(passw) == 0:
+    if len(website_entry) == 0 or len(password_entry) == 0:
         messagebox.showinfo(title="Warning!", message="Do not leave fields empty")
 
     else:
@@ -44,6 +44,26 @@ def save():
         website_input.delete(0, END)
         password_input.delete(0, END)
 
+
+# ---------------------------- SEARCH PASSWORD  ------------------------------- #
+
+def find_password():
+    website_name_dict = website_input.get()
+    if not os.path.exists("Passwords.json") or os.stat("Passwords.json").st_size == 0:
+        messagebox.showinfo(title="ERROR", message="No data file found")
+    else:
+        try:
+            with open("Passwords.json", "r") as file:
+                data = json.load(file)
+                print(data[website_name_dict])
+        except KeyError:
+            messagebox.showinfo(title="ERROR", message="No such Website found")
+        else:
+            email_dict = "email"
+            password_dict = "password"
+            messagebox.showinfo(title=f"{website_name_dict}", message=f"Your mail is for this website "
+                                                                      f"is {data[website_name_dict][email_dict]} \n "
+                                f"and password is {data[website_name_dict][password_dict]} ")
 
 # ---------------------------- UI SETUP ------------------------------- #
 
@@ -69,12 +89,12 @@ password.grid(row=3, column=0)
 
 # text input:
 
-website_input = Entry(width=45)
-website_input.grid(row=1, column=1, columnspan=2)
+website_input = Entry(width=25)
+website_input.grid(row=1, column=1)
 website_input.focus()
 
-mail_input = Entry(width=45)
-mail_input.grid(row=2, column=1, columnspan=2)
+mail_input = Entry(width=40)
+mail_input.grid(row=2, column=0, columnspan=3)
 mail_input.insert(0, string="@gmail.com")
 
 password_input = Entry(width=25)
@@ -87,6 +107,7 @@ Add.grid(row=4, column=1, columnspan=2)
 generate = Button(text="Generate Password", width=20, command=generate_random_password)
 generate.grid(row=3, column=2)
 
-search = Button(text="Search")
+search = Button(text="Search", width=20, fg="blue", command=find_password)
+search.grid(row=1, column=2)
 
 window.mainloop()
