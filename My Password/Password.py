@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter import messagebox
-
+import json
+import os
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
 from RandomPasswordGenerator import Randompassword
 
@@ -14,22 +15,34 @@ def generate_random_password():
 
 
 def save():
-    web = website_input.get()
+    website_ = website_input.get()
+    mail_in = mail_input.get()
     passw = password_input.get()
+    new_data = {
+        website_: {
+            "email": mail_in,
+            "password": passw
+        }
+    }
 
-    if len(web) != 0 and len(passw) != 0:
-        is_ok = messagebox.askokcancel(title="Are you sure?",
-                                       message=f"Your website is {web} and your password is {passw}.Do you want to "
-                                               f"save it?")
-        if is_ok:
-            with open("Passwords_text_file", mode="a") as password_file:
-                password_file.write(
-                    f"website:{web} | mail/username:{mail_input.get()} | password:{passw}\n")
-            website_input.delete(0, END)
-            password_input.delete(0, END)
+    if len(website_) == 0 or len(passw) == 0:
+        messagebox.showinfo(title="Warning!", message="Do not leave fields empty")
 
     else:
-        messagebox.showinfo(title="Warning!", message="Do not leave fields empty")
+        if not os.path.exists("Passwords.json") or os.stat("Passwords.json").st_size == 0:
+            with open("Passwords.json", "w") as password_file:
+                json.dump(new_data, password_file, indent=4)
+        else:
+            try:
+                with open("Passwords.json", "r") as password_file:
+                    data = json.load(password_file)
+            except json.JSONDecodeError:
+                data = {}
+            data.update(new_data)
+            with open("Passwords.json", "w") as password_file:
+                json.dump(data, password_file, indent=4)
+        website_input.delete(0, END)
+        password_input.delete(0, END)
 
 
 # ---------------------------- UI SETUP ------------------------------- #
@@ -73,5 +86,7 @@ Add.grid(row=4, column=1, columnspan=2)
 
 generate = Button(text="Generate Password", width=20, command=generate_random_password)
 generate.grid(row=3, column=2)
+
+search = Button(text="Search")
 
 window.mainloop()
