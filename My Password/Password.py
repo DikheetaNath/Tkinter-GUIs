@@ -61,9 +61,8 @@ def find_password():
         else:
             email_dict = "email"
             password_dict = "password"
-            messagebox.showinfo(title=f"{website_name_dict}", message=f"Your mail is for this website "
-                                                                      f"is {data[website_name_dict][email_dict]} \n "
-                                f"and password is {data[website_name_dict][password_dict]} ")
+            messagebox.showinfo(title=f"{website_name_dict}", message=f"Your mail :{data[website_name_dict][email_dict]} \n "
+                                f"Your password: {data[website_name_dict][password_dict]} ")
 
 # ---------------------------- UI SETUP ------------------------------- #
 
