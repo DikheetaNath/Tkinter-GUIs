@@ -20,6 +20,7 @@ A productivity timer based on the famous [Pomodoro Technique](https://en.wikiped
   - After 4 such sessions, a long 25 minutes break to energize yourself.
   - A cute tomato to keep you company.
   - Reset when you want to take on a new challange.
+    ![Timer](https://github.com/DikheetaNath/Tkinter-GUIs/blob/master/pomodoro-timer/Screenshot%202024-07-01%20000108.png)
     
 
 ### 3. Miles to Kilometers Converter
